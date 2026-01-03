@@ -1,14 +1,47 @@
 import { useState } from 'react';
 import './App.css';
+import axios from 'axios';
 
 function App() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  //儲存登入表單資料
+  const [account, setAccount] = useState({
+    email: "",
+    pass: "",
+  });
 
-  const handleSubmit = (e) => {
+  //改變輸入值
+  const handleInputChange = (e) => {
+    //解構抓e的內容
+    const { name, value } = e.target;
+    //存到account 裡面
+    setAccount({
+      ...account,
+      [name]: value
+    })
+  }
+
+  //執行登入
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
+
+  const handleLogin = (e) => {
     e.preventDefault();
-    console.log('正在登入...', { email, password });
-  };
+    console.log(account);
+    axios.post(`${BASE_URL}/v2/admin/signin`,
+      {
+        username: account.email,
+        password: account.pass
+      }
+    )
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.success) {
+          alert("登入成功");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
 
   return (
     <div className="container">
@@ -28,18 +61,21 @@ function App() {
                     <h2 className="fw-bold">
                       系統登入 <span className="text-cyan">Login</span>
                     </h2>
-                    <p className="text-white-50 small mt-2">進入科技化管理控制台</p>
+                    <p className="text-white-50 small mt-2">第2025 React 作品實戰冬季班</p>
+                    <p className="text-white-50 small mt-2">第二週 - RESTful API 串接</p>
+
                   </div>
 
-                  <form onSubmit={handleSubmit}>
+                  <form onSubmit={handleLogin}>
                     <div className="mb-4">
                       <label className="form-label small text-white-50">電子郵件 (Email)</label>
                       <input
                         type="email"
+                        name="email"
                         className="form-control"
                         placeholder="admin@tech-system.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={account.email}
+                        onChange={handleInputChange}
                         required
                       />
                     </div>
@@ -48,10 +84,11 @@ function App() {
                       <label className="form-label small text-white-50">密碼 (Password)</label>
                       <input
                         type="password"
+                        name="pass"
                         className="form-control"
                         placeholder="••••••••"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={account.pass}
+                        onChange={handleInputChange}
                         required
                       />
                     </div>
@@ -62,12 +99,6 @@ function App() {
                       </button>
                     </div>
                   </form>
-
-                  <div className="mt-4 text-center">
-                    <small className="text-white-50">
-                      需要協助？ <a href="#" className="text-cyan text-decoration-none">聯絡技術支援</a>
-                    </small>
-                  </div>
                 </div>
               </div>
 
