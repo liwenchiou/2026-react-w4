@@ -4,8 +4,8 @@ import axios from 'axios';
 
 function App() {
   const [account, setAccount] = useState({
-    email: "codebloom@gmail.com",
-    pass: "codebloom",
+    email: "",
+    pass: "",
   });
 
   const [isAuth, setIsAuth] = useState(false);
