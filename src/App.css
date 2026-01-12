@@ -128,3 +128,40 @@ body {
   overflow: hidden;
   background: rgba(0,0,0,0.2);
 }
+
+/* 自定義分頁樣式 */
+.custom-pagination .page-link {
+  background-color: rgba(255, 255, 255, 0.05); /* 半透明背景 */
+  border: 1px solid rgba(0, 242, 254, 0.2);     /* 淡淡的氰色邊框 */
+  color: #00f2fe;                             /* 氰色文字 (text-cyan) */
+  margin: 0 3px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.custom-pagination .page-link:hover {
+  background-color: rgba(0, 242, 254, 0.2);
+  color: #fff;
+  border-color: #00f2fe;
+}
+
+/* 啟動狀態 (Active) */
+.custom-pagination .page-item.active .page-link {
+  background-color: #00f2fe;
+  border-color: #00f2fe;
+  color: #000; /* 深色文字以便對比 */
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+}
+
+/* 禁用狀態 (Disabled) */
+.custom-pagination .page-item.disabled .page-link {
+  background-color: transparent;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* 移除 Bootstrap 預設的藍色 Focus 陰影 */
+.custom-pagination .page-link:focus {
+  box-shadow: none;
+  outline: none;
+}

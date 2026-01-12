@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios";
-import Auth from "./Auth";
-import ArticleList from "./ArticleList";
+import LoginPage from "./pages/LoginPage";
+import ArticleList from "./pages/ArticleList";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const API_PATH = import.meta.env.VITE_API_PATH;
 
@@ -48,7 +48,7 @@ function App() {
       {isAuth ? (
         <ArticleList articles={articles} getProducts={getProducts} pageInfo={pageInfo}/>
       ) : (
-        <Auth setIsAuth={setIsAuth} getProducts={getProducts} />
+        <LoginPage setIsAuth={setIsAuth} getProducts={getProducts} />
       )}
     </>
   );

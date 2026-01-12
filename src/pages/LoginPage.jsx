@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const API_PATH = import.meta.env.VITE_API_PATH;
-function Auth({ setIsAuth, getProducts }) {
+function LoginPage({ setIsAuth, getProducts }) {
   const [account, setAccount] = useState({
     email: "",
     pass: "",
@@ -100,4 +100,4 @@ function Auth({ setIsAuth, getProducts }) {
     </div>
   );
 }
-export default Auth;
+export default LoginPage;

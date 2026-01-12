@@ -147,11 +147,32 @@ function ArticleList({ articles, getProducts, pageInfo }) {
   };
 
   //點擊換頁
-  const handleChangePage=(page)=>{
+  const handleChangePage = (page) => {
     console.log(page);
     getProducts(page);
+  };
 
-  }
+  //圖片上傳
+  const handleFileChange = async (e) => {
+    // console.log(e);
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("file-to-upload", file);
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/v2/api/${API_PATH}/admin/upload`,
+        formData
+      );
+      const uploadedImageUrl = res.data.imageUrl;
+      setSelectedArticle({
+        ...selectedArticle,
+        imageUrl: uploadedImageUrl,
+      });
+    } catch (error) {
+      alert("圖片上傳失敗！！");
+      console.log(error);
+    }
+  };
   return (
     <>
       <div className="admin-wrapper">
@@ -228,40 +249,52 @@ function ArticleList({ articles, getProducts, pageInfo }) {
             </div>
           </div>
         </div>
-              {/* 分頁 */}
-      <div className="d-flex justify-content-center">
-        <nav>
-          <ul className="pagination">
-            <li className={`page-item ${!pageInfo.has_pre && "disabled"}`}>
-              <a className="page-link" href="#" onClick={()=>handleChangePage(pageInfo.current_page - 1)}>
-                上一頁
-              </a>
-            </li>
-            {Array.from({ length: pageInfo.total_pages }).map((_, index) => (
-              <li
-                key={index + 1}
-                className={`page-item ${
-                  pageInfo.current_page === index + 1 ? "active" : ""
-                }`}
-              >
-                <a className="page-link" href="#"
-                onClick={()=>handleChangePage(index + 1)}>
-                  {index + 1}
-                </a>
-              </li>
-            ))}
+{/* 分頁 */}
+<div className="d-flex justify-content-center mt-4">
+  <nav aria-label="Page navigation">
+    <ul className="pagination custom-pagination">
+      {/* 上一頁 */}
+      <li className={`page-item ${!pageInfo.has_pre ? "disabled" : ""}`}>
+        <button
+          className="page-link"
+          onClick={() => handleChangePage(pageInfo.current_page - 1)}
+          disabled={!pageInfo.has_pre}
+        >
+          &laquo;
+        </button>
+      </li>
 
-            <li className={`page-item ${!pageInfo.has_next && "disabled" }`}>
-              <a className="page-link" href="#" onClick={()=>handleChangePage(pageInfo.current_page + 1)}>
-                下一頁
-              </a>
-            </li>
-          </ul>
-        </nav>
+      {/* 頁碼 */}
+      {Array.from({ length: pageInfo.total_pages }).map((_, index) => (
+        <li
+          key={index + 1}
+          className={`page-item ${
+            pageInfo.current_page === index + 1 ? "active" : ""
+          }`}
+        >
+          <button
+            className="page-link"
+            onClick={() => handleChangePage(index + 1)}
+          >
+            {index + 1}
+          </button>
+        </li>
+      ))}
+
+      {/* 下一頁 */}
+      <li className={`page-item ${!pageInfo.has_next ? "disabled" : ""}`}>
+        <button
+          className="page-link"
+          onClick={() => handleChangePage(pageInfo.current_page + 1)}
+          disabled={!pageInfo.has_next}
+        >
+          &raquo;
+        </button>
+      </li>
+    </ul>
+  </nav>
+</div>
       </div>
-      </div>
-
-
 
       {/* --- Modal 結構 --- */}
       <div
@@ -286,6 +319,18 @@ function ArticleList({ articles, getProducts, pageInfo }) {
             <div className="modal-body p-4">
               <div className="row g-4">
                 <div className="col-md-4">
+                  <div className="mb-5">
+                    <label htmlFor="fileInput" className="form-label">
+                      圖片上傳
+                    </label>
+                    <input
+                      type="file"
+                      accept=".jpg,.jpeg,.png"
+                      className="form-control"
+                      id="fileInput"
+                      onChange={handleFileChange}
+                    />
+                  </div>
                   <div className="mb-4">
                     <label className="form-label text-white-50 small">
                       主圖連結
