@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'; // 如果您使用 React
 
 // 取得您的 GitHub 倉庫名稱
 // 假設您的倉庫 URL 是：https://github.com/USERNAME/REPO_NAME
-const REPO_NAME = '2026-react-w3'; 
+const REPO_NAME = '2026-react-w4'; 
 
 export default defineConfig({
   // 將 base 設置為您的倉庫名稱 (需要以斜線結尾或只用斜線)
