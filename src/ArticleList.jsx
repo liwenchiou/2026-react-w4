@@ -3,17 +3,9 @@ import { Modal } from "bootstrap";
 import axios from "axios";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const API_PATH = import.meta.env.VITE_API_PATH;
-function Article({ articles, setIsAuth, getProducts }) {
+function ArticleList({ articles, getProducts }) {
   const productModalRef = useRef(null);
-  const handleCheckLogin = () => {
-    axios
-      .post(`${BASE_URL}/v2/api/user/check`)
-      .then(() => {
-        setIsAuth(true);
-        getProducts();
-      })
-      .catch((error) => console.log(error));
-  };
+
   const [modalOpenType, setModalOpenType] = useState(null);
   // modal 預設值
   const defaultModalState = {
@@ -43,16 +35,7 @@ function Article({ articles, setIsAuth, getProducts }) {
       new Modal(productModalRef.current);
     }
   }, []);
-  useEffect(() => {
-    const defaultToken = document.cookie.replace(
-      /(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,
-      "$1"
-    );
-    if (defaultToken) {
-      axios.defaults.headers.common["Authorization"] = defaultToken;
-      handleCheckLogin();
-    }
-  }, []);
+  
 
   // 關閉 Modal
   const handelCloseModal = () => {
@@ -490,4 +473,4 @@ function Article({ articles, setIsAuth, getProducts }) {
   );
 }
 
-export default Article;
+export default ArticleList;

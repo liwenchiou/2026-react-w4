@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios";
-import { Modal } from "bootstrap";
 import Auth from "./Auth";
 import ArticleList from "./ArticleList";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -20,14 +19,31 @@ function App() {
       .catch((err) => console.log(err));
   };
 
+  const handleCheckLogin = () => {
+    axios
+      .post(`${BASE_URL}/v2/api/user/check`)
+      .then(() => {
+        setIsAuth(true);
+        getProducts();
+      })
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    const defaultToken = document.cookie.replace(
+      /(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,
+      "$1"
+    );
+    if (defaultToken) {
+      axios.defaults.headers.common["Authorization"] = defaultToken;
+      handleCheckLogin();
+    }
+  }, []);
+
   return (
     <>
       {isAuth ? (
-        <ArticleList
-          articles={articles}
-          setIsAuth={setIsAuth}
-          getProducts={getProducts}
-        />
+        <ArticleList articles={articles} getProducts={getProducts} />
       ) : (
         <Auth setIsAuth={setIsAuth} getProducts={getProducts} />
       )}
