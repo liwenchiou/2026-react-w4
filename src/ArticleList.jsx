@@ -3,7 +3,7 @@ import { Modal } from "bootstrap";
 import axios from "axios";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const API_PATH = import.meta.env.VITE_API_PATH;
-function ArticleList({ articles, getProducts }) {
+function ArticleList({ articles, getProducts, pageInfo }) {
   const productModalRef = useRef(null);
 
   const [modalOpenType, setModalOpenType] = useState(null);
@@ -35,7 +35,6 @@ function ArticleList({ articles, getProducts }) {
       new Modal(productModalRef.current);
     }
   }, []);
-  
 
   // 關閉 Modal
   const handelCloseModal = () => {
@@ -146,10 +145,17 @@ function ArticleList({ articles, getProducts }) {
       ? updateArticle(selectedArticle.id)
       : createArticle();
   };
+
+  //點擊換頁
+  const handleChangePage=(page)=>{
+    console.log(page);
+    getProducts(page);
+
+  }
   return (
     <>
       <div className="admin-wrapper">
-        <div className="container">
+        <div className="container mb-3">
           <h3 className="mb-4 fw-bold text-white">
             <span className="text-cyan">CODEBLOOM</span> 文章後台管理
           </h3>
@@ -222,7 +228,41 @@ function ArticleList({ articles, getProducts }) {
             </div>
           </div>
         </div>
+              {/* 分頁 */}
+      <div className="d-flex justify-content-center">
+        <nav>
+          <ul className="pagination">
+            <li className={`page-item ${!pageInfo.has_pre && "disabled"}`}>
+              <a className="page-link" href="#" onClick={()=>handleChangePage(pageInfo.current_page - 1)}>
+                上一頁
+              </a>
+            </li>
+            {Array.from({ length: pageInfo.total_pages }).map((_, index) => (
+              <li
+                key={index + 1}
+                className={`page-item ${
+                  pageInfo.current_page === index + 1 ? "active" : ""
+                }`}
+              >
+                <a className="page-link" href="#"
+                onClick={()=>handleChangePage(index + 1)}>
+                  {index + 1}
+                </a>
+              </li>
+            ))}
+
+            <li className={`page-item ${!pageInfo.has_next && "disabled" }`}>
+              <a className="page-link" href="#" onClick={()=>handleChangePage(pageInfo.current_page + 1)}>
+                下一頁
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
+      </div>
+
+
+
       {/* --- Modal 結構 --- */}
       <div
         ref={productModalRef}

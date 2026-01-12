@@ -9,12 +9,15 @@ const API_PATH = import.meta.env.VITE_API_PATH;
 function App() {
   const [isAuth, setIsAuth] = useState(false);
   const [articles, setArticles] = useState([]);
+  const [pageInfo, setPageInfo] = useState({});
 
-  const getProducts = () => {
+  const getProducts = (page=1) => {
     axios
-      .get(`${BASE_URL}/v2/api/${API_PATH}/products/all`)
+      .get(`${BASE_URL}/v2/api/${API_PATH}/admin/products?page=${page}`)
       .then((res) => {
         setArticles(Object.values(res.data.products));
+        setPageInfo(res.data.pagination);
+        console.log(res.data.pagination);
       })
       .catch((err) => console.log(err));
   };
@@ -43,7 +46,7 @@ function App() {
   return (
     <>
       {isAuth ? (
-        <ArticleList articles={articles} getProducts={getProducts} />
+        <ArticleList articles={articles} getProducts={getProducts} pageInfo={pageInfo}/>
       ) : (
         <Auth setIsAuth={setIsAuth} getProducts={getProducts} />
       )}
