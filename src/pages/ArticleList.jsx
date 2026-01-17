@@ -20,6 +20,7 @@ function ArticleList({ articles, getProducts, pageInfo }) {
     description: "",
     content: "",
     is_enabled: 0,
+    like_count: "",
     imagesUrl: [""],
   };
   const [selectedArticle, setSelectedArticle] = useState(defaultModalState);

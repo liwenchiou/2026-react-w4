@@ -187,6 +187,20 @@ function ProductModal({productModalRef,modalOpenType,handelCloseModal,handleFile
                     />
                   </div>
                 </div>
+                <div className="mb-3">
+                  <div className="col">
+                    <label className="form-label text-white-50 small">
+                      喜好程度（自訂欄位）
+                    </label>
+                    <input
+                      onChange={handleModalInputChange}
+                      value={selectedArticle.like_count || ""}
+                      name="like_count"
+                      type="number"
+                      className="form-control bg-dark text-white border-secondary"
+                    />
+                  </div>
+                </div>
 
                 <div className="mb-3">
                   <label className="form-label text-white-50 small">
